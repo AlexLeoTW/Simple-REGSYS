@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_GRADE 25
+#define PGM_NAME REGSYS
+
+#define MAXSIZE 50
+#define MAX_COURSE_SIZE 10
+
+struct Student
+{
+    char ActFlag[2];            // initial value = y\0  suspend = n\0
+    char StudentID[9];          // initial value = D99999999\0
+    char StudentName[21];       // initial value = all 'x' & \0
+    int TotCoursePoints;        // initial value = 0
+    int TotalCredits;           // initial value = 0
+    float Average;              // initial value = 0.00
+    struct Course* FirstCourse; // initial value = null
+};
+
+struct Course
+{
+    struct Course* NextCourse;
+    char CurseCode[10];         // value = course code + \0
+    int Score;
+};
+
+struct Credit
+{
+    char CurseCode[10];
+    int CourseCredit;
+    struct Credit* NextCourse;
+};
+
+void initalRegArray(struct Student* regArray, int size);
+
+void loadFromFile(struct Student* regArray, int size);
+void strNcpy(char* dest, char* src, int startPoint, int endPoint);
+
+void groupInsert(struct Student* regArray, int size, struct Credit** credit);
+int insertCourse(struct Course** firstCourse, char* courseCode, int score);
+void insertCredit(struct Credit** headPtr, char* courseCode, int credit);
+
+int searchStudent(struct Student* regArray, char* studentID, int size);
+struct Credit* searchCredit(struct Credit* credit, char* courseCode);
+
+void suspend(struct Student* regArray, int size);
+void clearCourse(struct Course** courseToRemove);
+
+void calculateAvg(struct Student* regArray, int size, struct Credit* credit);
+int calculateTotalPoint(struct Course* course, struct Credit* credit);
+
+void printRegArray(struct Student* regArray, int size);
+
+void printIndividual(struct Student* student, int size);
+void printCourseList(struct Course* course);
+
